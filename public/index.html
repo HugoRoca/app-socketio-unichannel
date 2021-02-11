@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test SocketIO</title>
+  </head>
+  <body>
+    <form>
+      <label for="">ID:</label>
+      <input type="text" id="id" placeholder="id" required value="1"/>
+      <button id="btnEnter">Enter</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"
+      integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('#btnEnter').click(function (e) {
+          e.preventDefault()
+
+          const id = $('#id').val()
+          const config = {
+            method: 'get',
+            url: `http://localhost:3000/api/user/${id}`
+          }
+
+          axios(config)
+            .then((res) => {
+              console.log(res.data.token)
+              const socket = io.connect('http://localhost:3000', {
+                query: {
+                  token: res.data.token
+                }
+              })
+
+              socket.on('connection', function () {
+                console.log('authenticated');
+              }).on('disconnect', function () {
+                console.log('disconnected');
+              });
+
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        })
+      })
+    </script>
+  </body>
+</html>

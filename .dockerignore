@@ -1,4 +1,5 @@
 # Directories
+.vscode/
 .cache/
 node_modules/
 dist/
@@ -7,7 +8,6 @@ tmp/
 
 # Logs
 *.log
-*lock
 
 # Generated files
 .DS_Store
@@ -15,8 +15,11 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.lock
-package-lock.json
-env.yaml
 
 # Properties
-# .env
+.env
+
+# Others
+.editorconfig
+.gitignore
+README.md
